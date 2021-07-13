@@ -18,8 +18,7 @@ namespace FractalPainting.Tests
         {
             container = DIContainerTask.ConfigureContainer();
         }
-
-
+        
         [Test]
         public void AllActionsShouldBeBound()
         {

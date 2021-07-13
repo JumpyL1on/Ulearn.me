@@ -9,16 +9,16 @@ namespace FractalPainting.App
 {
     public class ImageSettingsAction : IUiAction
     {
-        private ImageSettings ImageSettings { get; }
         private IImageHolder ImageHolder { get; }
+        private ImageSettings ImageSettings { get; }
         public MenuCategory Category => MenuCategory.Settings;
         public string Name => "Изображение...";
         public string Description => "Размеры изображения";
 
-        public ImageSettingsAction(ImageSettings imageSettings, IImageHolder imageHolder)
+        public ImageSettingsAction(IImageHolder imageHolder, ImageSettings imageSettings)
         {
-            ImageSettings = imageSettings;
             ImageHolder = imageHolder;
+            ImageSettings = imageSettings;
         }
 
         public void Perform()
@@ -30,16 +30,16 @@ namespace FractalPainting.App
 
     public class SaveImageAction : IUiAction
     {
-        private AppSettings AppSettings { get; }
         private IImageHolder ImageHolder { get; }
+        private AppSettings AppSettings { get; }
         public MenuCategory Category => MenuCategory.File;
         public string Name => "Сохранить...";
         public string Description => "Сохранить изображение в файл";
 
-        public SaveImageAction(AppSettings appSettings, IImageHolder imageHolder)
+        public SaveImageAction(IImageHolder imageHolder, AppSettings appSettings)
         {
-            AppSettings = appSettings;
             ImageHolder = imageHolder;
+            AppSettings = appSettings;
         }
 
         public void Perform()
@@ -78,18 +78,8 @@ namespace FractalPainting.App
 
     public class MainForm : Form
     {
-        public MainForm() : this(
-            new IUiAction[]
-            {
-                new SaveImageAction(Services.GetAppSettings(), Services.GetImageHolder()), new DragonFractalAction(),
-                new KochFractalAction(),
-                new ImageSettingsAction(Services.GetImageSettings(), Services.GetImageHolder()),
-                new PaletteSettingsAction(Services.GetPalette())
-            }, Services.GetPictureBoxImageHolder())
-        {
-        }
-
-        private MainForm(IUiAction[] actions, PictureBoxImageHolder pictureBox)
+        public MainForm(IUiAction saveImageAction, IUiAction dragonFractalAction, IUiAction kochFractalAction,
+            IUiAction imageSettingsAction, IUiAction paletteSettingsAction, PictureBoxImageHolder pictureBox)
         {
             var imageSettings = CreateSettingsManager().Load().ImageSettings;
             ClientSize = new Size(imageSettings.Width, imageSettings.Height);
@@ -97,6 +87,8 @@ namespace FractalPainting.App
             pictureBox.Dock = DockStyle.Fill;
             Controls.Add(pictureBox);
             var mainMenu = new MenuStrip();
+            var actions = new[]
+                {saveImageAction, dragonFractalAction, kochFractalAction, imageSettingsAction, paletteSettingsAction};
             mainMenu.Items.AddRange(actions.ToMenuItems());
             mainMenu.Dock = DockStyle.Top;
             Controls.Add(mainMenu);
