@@ -1,43 +1,59 @@
-using System;
-
 namespace SRP.ControlDigit
 {
     public static class Extensions
     {
-        // Вспомогательные методы-расширения поместите в этот класс.
-        // Они должны быть понятны и потенциально полезны вне контекста задачи расчета контрольных разрядов.
+        public static int CalculateSumOfDigitsInOddNumberedPositionsStartingFromEnd(long number)
+        {
+            var sum = 0;
+            var num = number.ToString();
+            for (var i = num.Length - 1; i >= 0; i -= 2)
+                sum += int.Parse(num[i].ToString());
+            return sum;
+        }
+		
+        public static int CalculateSumOfDigitsInEvenNumberedPositionsStartingFromEnd(long number)
+        {
+            var sum = 0;
+            var num = number.ToString();
+            for (var i = num.Length - 2; i >= 0; i -= 2)
+                sum += int.Parse(num[i].ToString());
+            return sum;
+        }
+		
+        public static int CalculateCheckDigit(int sum)
+        {
+            var remainder = sum % 10;
+            return remainder == 0 ? 0 : 10 - remainder;
+        }
     }
-
-    public static class ControlDigitAlgo
-    {
+	
+	public class ControlDigitAlgo
+	{
+        //cDA - controlDigitAlgo
         public static int Upc(long number)
-        {
-            int sum = 0;
-            int factor = 3;
-            do
-            {
-                int digit = (int)(number % 10);
-                sum += factor * digit;
-                factor = 4 - factor;
-                number /= 10;
-
-            }
-            while (number > 0);
-
-            int result = sum % 10;
-            if (result != 0)
-                result = 10 - result;
-            return result;
+		{
+            var oddSum = Extensions.CalculateSumOfDigitsInOddNumberedPositionsStartingFromEnd(number);
+            var evenSum = Extensions.CalculateSumOfDigitsInEvenNumberedPositionsStartingFromEnd(number);
+            return Extensions.CalculateCheckDigit(oddSum * 3 + evenSum);
         }
-
-        public static int Isbn10(long number)
-        {
-            throw new NotImplementedException();
+		
+		public static char Isbn10(long number)
+		{
+			if (number == 0)
+				return '0';
+            var sum = 0;
+            var num = number.ToString();
+            for (var i = num.Length - 1; i >= 0; i--)
+                sum += int.Parse(num[i].ToString()) * (num.Length - i + 1);
+            var theCheckDigit = 11 - sum % 11;
+            return theCheckDigit == 10 ? 'X' : theCheckDigit.ToString()[0];
         }
-
-        public static int Luhn(long number)
-        {
-            throw new NotImplementedException();
+		
+		public static int Isbn13(long number)
+		{
+            var oddSum = Extensions.CalculateSumOfDigitsInOddNumberedPositionsStartingFromEnd(number);
+            var evenSum = Extensions.CalculateSumOfDigitsInEvenNumberedPositionsStartingFromEnd(number);
+            return Extensions.CalculateCheckDigit(oddSum + evenSum * 3);
         }
-    }
+	}
 }
