@@ -1,26 +1,58 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Delegates.TreeTraversal
 {
-    public static class Traversal
+    public abstract class Traversal
     {
-        public static IEnumerable<Product> GetProducts(ProductCategory root)
+        private static readonly List<Job> EndJobs = new List<Job>();
+        private static readonly List<Product> Products = new List<Product>();
+        private static readonly List<int> BinaryTreeValues = new List<int>();
+
+        public static IEnumerable<int> GetBinaryTreeValues(BinaryTree<int> data)
         {
-            throw new NotImplementedException();
+            TreeTraversal(
+                binaryTree => BinaryTreeValues.Add(binaryTree.Value),
+                () =>
+                {
+                    if (data.Left != null)
+                        GetBinaryTreeValues(data.Left);
+                    if (data.Right != null)
+                        GetBinaryTreeValues(data.Right);
+                }, 
+                data);
+            return BinaryTreeValues;
         }
 
-        public static IEnumerable<Job> GetEndJobs(Job root)
+        public static IEnumerable<Job> GetEndJobs(Job data)
         {
-            throw new NotImplementedException();
+            TreeTraversal(
+                job =>
+                {
+                    if (job.Subjobs.Count == 0)
+                        EndJobs.Add(job);
+                },
+                () => data.Subjobs.ForEach(job => GetEndJobs(job)),
+                data);
+            return EndJobs;
         }
 
-        public static IEnumerable<T> GetBinaryTreeValues<T>(BinaryTree<T> root)
+        public static IEnumerable<Product> GetProducts(ProductCategory data)
         {
-            throw new NotImplementedException();
+            TreeTraversal(
+                productCategory => productCategory.Products.ForEach(product => Products.Add(product)),
+                () => data.Categories.ForEach(productCategory => GetProducts(productCategory)),
+                data);
+            return Products;
+        }
+
+        private static void TreeTraversal<T>(
+            Action<T> addValueToResultByCondition, 
+            Action checkAnotherValues, 
+            T data)
+        {
+            addValueToResultByCondition(data);
+            checkAnotherValues();
         }
     }
 }
