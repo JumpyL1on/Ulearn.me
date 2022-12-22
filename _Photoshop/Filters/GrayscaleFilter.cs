@@ -15,11 +15,7 @@
             {
                 for (var y = 0; y < original.Height; y++)
                 {
-                    var pixel = original[x, y];
-
-                    var average = (pixel.R + pixel.G + pixel.B) / 3;
-
-                    result[x, y] = new Pixel(average, average, average);
+                    result[x, y] = ProcessPixel(original[x, y], parameters)
                 }
             }
 
@@ -29,6 +25,13 @@
         public override string ToString()
         {
             return "Оттенки серого";
+        }
+
+        private Pixel ProcessPixel(Pixel original, double[] parameters)
+        {
+            var average = (original.R + original.G + original.B) / 3;
+
+            return new Pixel(average, average, average);
         }
     }
 }
