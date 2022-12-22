@@ -25,6 +25,23 @@ namespace MyPhotoshop
             set { b = CheckValue(value); }
         }
 
+        public Pixel(double r, double g, double b) : this()
+        {
+            R = r;
+            G = g;
+            B = b;
+        }
+
+        public static Pixel operator *(Pixel p, double c)
+        {
+            return new Pixel(p.r * c, p.g * c, p.b * c);
+        }
+
+        public static Pixel operator *(double c, Pixel p)
+        {
+            return p * c;
+        }
+
         private double CheckValue(double value)
         {
             if (value < 0 || value > 1)
@@ -35,13 +52,6 @@ namespace MyPhotoshop
             {
                 return value;
             }
-        }
-
-        public Pixel(double r, double g, double b) : this()
-        {
-            R = r;
-            G = g;
-            B = b;
         }
     }
 }
