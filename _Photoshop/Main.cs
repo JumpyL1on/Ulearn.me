@@ -10,9 +10,20 @@ namespace MyPhotoshop
 		{
 			var window = new MainWindow();
 
-			window.AddFilter(new LighteningFilter());
+			window.AddFilter(new PixelFilter<LighteningParameters>(
+				"Осветление/затемнение",
+				(original, parameters) => original * parameters.Coefficient
+				));
 
-			window.AddFilter(new GrayscaleFilter());
+			window.AddFilter(new PixelFilter<EmptyParameters>(
+				"Оттенки серого",
+				(original, parameters) =>
+				{
+                    var average = (original.R + original.G + original.B) / 3;
+
+                    return new Pixel(average, average, average);
+                }
+				));
 
 			Application.Run(window);
 		}
