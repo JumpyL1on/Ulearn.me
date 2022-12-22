@@ -2,9 +2,8 @@
 {
     public class GrayscaleFilter : PixelFilter
     {
-        public override ParameterInfo[] GetParameters()
+        public GrayscaleFilter(IParameters parameters) : base(parameters)
         {
-            return new ParameterInfo[0];
         }
 
         public override string ToString()
@@ -12,7 +11,7 @@
             return "Оттенки серого";
         }
 
-        protected override Pixel ProcessPixel(Pixel original, double[] parameters)
+        protected override Pixel ProcessPixel(Pixel original, IParameters parameters)
         {
             var average = (original.R + original.G + original.B) / 3;
 

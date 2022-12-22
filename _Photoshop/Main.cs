@@ -10,9 +10,9 @@ namespace MyPhotoshop
 		{
 			var window = new MainWindow();
 
-			window.AddFilter(new LighteningFilter());
+			window.AddFilter(new LighteningFilter(new LighteningParameters()));
 
-			window.AddFilter(new GrayscaleFilter());
+			window.AddFilter(new GrayscaleFilter(new EmptyParameters()));
 
 			Application.Run(window);
 		}
