@@ -1,7 +1,5 @@
 namespace MyPhotoshop
 {
-
-	
 	public interface IFilter
 	{
         /// <summary>
