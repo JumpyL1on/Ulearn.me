@@ -1,5 +1,3 @@
-using System;
-
 namespace MyPhotoshop
 {
 	public class LighteningFilter : IFilter
@@ -17,20 +15,32 @@ namespace MyPhotoshop
 		{
 			return "Осветление/затемнение";
 		}
-		
+
 		public Photo Process(Photo original, double[] parameters)
 		{
-			var result=new Photo();
-			result.width=original.width;
-			result.height=original.height;
-			result.data=new double[result.width,result.height,3];
-			
-			for (int x=0;x<result.width;x++)
-				for (int y=0;y<result.height;y++)
-					for (int z=0;z<3;z++)
-						result.data[x,y,z]=original.data[x,y,z]*parameters[0];
+            var result = new Photo
+            {
+                width = original.width,
+                height = original.height
+            };
+            result.data = new Pixel[result.width, result.height];
+
+            for (var x = 0; x < result.width; x++)
+			{
+                for (var y = 0; y < result.height; y++)
+				{
+                    result.data[x, y] = new Pixel();
+                }
+            }
+
+            for (int x = 0; x < result.width; x++)
+				for (int y = 0; y < result.height; y++)
+				{
+                    result.data[x, y].R = original.data[x, y].R * parameters[0];
+                    result.data[x, y].G = original.data[x, y].G * parameters[0];
+                    result.data[x, y].B = original.data[x, y].B * parameters[0];
+                }
 			return result;
 		}
 	}
 }
-
