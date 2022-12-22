@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace MyPhotoshop
 {
@@ -7,30 +6,27 @@ namespace MyPhotoshop
         where TParameters : IParameters, new()
     {
         private readonly string filterName;
-        private readonly Func<Size, TParameters, Size> sizeTransform;
-        private readonly Func<Point, Size, TParameters, Point?> pointTransform;
+        private readonly ITransformer<TParameters> transformer;
 
         public TransformFilter(
             string filterName,
-            Func<Size, TParameters, Size> sizeTransform,
-            Func<Point, Size, TParameters, Point?> pointTransform)
+            ITransformer<TParameters> transformer)
         {
             this.filterName = filterName;
-            this.sizeTransform= sizeTransform;
-            this.pointTransform= pointTransform;
+            this.transformer = transformer;
         }
 
         public override Photo Process(Photo original, TParameters parameters)
         {
-            var size = sizeTransform(new Size(original.Width, original.Height), parameters);
+            transformer.Prepare(new Size(original.Width, original.Height), parameters);
 
-            var result = new Photo(size.Width, size.Height);
+            var result = new Photo(transformer.ResultSize.Width, transformer.ResultSize.Height);
 
-            for (var x = 0; x < size.Width; x++)
+            for (var x = 0; x < result.Width; x++)
             {
-                for (var y = 0; y < size.Height; y++)
+                for (var y = 0; y < result.Height; y++)
                 {
-                    var point = pointTransform(new Point(x, y), new Size(original.Width, original.Height), parameters);
+                    var point = transformer.MapPoint(new Point(x, y));
 
                     if (point != null)
                     {

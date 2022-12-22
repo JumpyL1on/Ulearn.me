@@ -51,6 +51,8 @@
     <Compile Include="Parameters\IParameters.cs" />
     <Compile Include="Parameters\LighteningParameters.cs" />
     <Compile Include="Parameters\RotationParameters.cs" />
+    <Compile Include="Transformers\ITransformer.cs" />
+    <Compile Include="Transformers\RotateTransformer.cs" />
     <Compile Include="Window\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
