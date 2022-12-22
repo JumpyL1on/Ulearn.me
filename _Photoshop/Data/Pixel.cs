@@ -2,7 +2,7 @@
 
 namespace MyPhotoshop
 {
-    public class Pixel
+    public struct Pixel
     {
         private double r;
         public double R
@@ -35,6 +35,13 @@ namespace MyPhotoshop
             {
                 return value;
             }
+        }
+
+        public Pixel(double r, double g, double b) : this()
+        {
+            R = r;
+            G = g;
+            B = b;
         }
     }
 }

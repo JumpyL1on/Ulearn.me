@@ -11,18 +11,12 @@ namespace MyPhotoshop
 			Width = width;
 			Height = height;
 			data = new Pixel[Width, Height];
-			for (var x = 0; x < Width; x++)
-			{
-				for (var y = 0; y < Height; y++)
-				{
-					data[x, y] = new Pixel();
-				}
-			}
 		}
 
 		public Pixel this[int x, int y]
 		{
 			get { return data[x, y]; }
+			set { data[x, y] = value; }
 		}
 	}
 }

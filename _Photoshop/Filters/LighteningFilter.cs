@@ -23,9 +23,10 @@ namespace MyPhotoshop
             for (int x = 0; x < result.Width; x++)
 				for (int y = 0; y < result.Height; y++)
 				{
-                    result[x, y].R = original[x, y].R * parameters[0];
-                    result[x, y].G = original[x, y].G * parameters[0];
-                    result[x, y].B = original[x, y].B * parameters[0];
+					result[x, y] = new Pixel(
+						original[x, y].R * parameters[0],
+                        original[x, y].G * parameters[0],
+                        original[x, y].B * parameters[0]);
                 }
 			return result;
 		}
