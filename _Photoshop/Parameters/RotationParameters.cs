@@ -1,8 +1,8 @@
 ﻿namespace MyPhotoshop
 {
-    public class LighteningParameters : IParameters
+    public class RotationParameters : IParameters
     {
-        public double Coefficient { get; private set; }
+        public double Angle { get; private set; }
 
         public ParameterInfo[] GetDescription()
         {
@@ -10,18 +10,18 @@
             {
                 new ParameterInfo
                 {
-                    Name = "Коэффициент",
-                    MaxValue = 10,
+                    Name = "Угол",
+                    MaxValue = 360,
                     MinValue = 0,
-                    Increment = 0.3,
-                    DefaultValue = 1
+                    Increment = 15,
+                    DefaultValue = 0
                 }
             };
         }
 
         public void SetValues(double[] values)
         {
-            Coefficient = values[0];
+            Angle = values[0];
         }
     }
 }

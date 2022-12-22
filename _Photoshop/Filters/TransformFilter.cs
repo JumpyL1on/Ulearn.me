@@ -3,35 +3,39 @@ using System.Drawing;
 
 namespace MyPhotoshop
 {
-    public class TransformFilter : ParametrizedFilter<EmptyParameters>
+    public class TransformFilter<TParameters> : ParametrizedFilter<TParameters>
+        where TParameters : IParameters, new()
     {
         private readonly string filterName;
-        private readonly Func<Size, Size> sizeTransform;
-        private readonly Func<Point, Size, Point> pointTransform;
+        private readonly Func<Size, TParameters, Size> sizeTransform;
+        private readonly Func<Point, Size, TParameters, Point?> pointTransform;
 
         public TransformFilter(
             string filterName,
-            Func<Size, Size> sizeTransform,
-            Func<Point, Size, Point> pointTransform)
+            Func<Size, TParameters, Size> sizeTransform,
+            Func<Point, Size, TParameters, Point?> pointTransform)
         {
             this.filterName = filterName;
             this.sizeTransform= sizeTransform;
             this.pointTransform= pointTransform;
         }
 
-        public override Photo Process(Photo original, EmptyParameters parameters)
+        public override Photo Process(Photo original, TParameters parameters)
         {
-            var size = sizeTransform(new Size(original.Width, original.Height));
+            var size = sizeTransform(new Size(original.Width, original.Height), parameters);
 
             var result = new Photo(size.Width, size.Height);
 
-            for (var x = 0; x < original.Width; x++)
+            for (var x = 0; x < size.Width; x++)
             {
-                for (var y = 0; y < original.Height; y++)
+                for (var y = 0; y < size.Height; y++)
                 {
-                    var point = pointTransform(new Point(x, y), size);
+                    var point = pointTransform(new Point(x, y), new Size(original.Width, original.Height), parameters);
 
-                    result[point.X, point.Y] = original[x, y];
+                    if (point != null)
+                    {
+                        result[x, y] = original[point.Value.X, point.Value.Y];
+                    }
                 }
             }
 
