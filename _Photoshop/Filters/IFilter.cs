@@ -1,5 +1,3 @@
-using System;
-
 namespace MyPhotoshop
 {
 
@@ -22,4 +20,3 @@ namespace MyPhotoshop
 		Photo Process(Photo original, double[] parameters);
 	}
 }
-
