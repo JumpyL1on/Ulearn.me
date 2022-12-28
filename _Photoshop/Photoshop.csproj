@@ -42,7 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Pixel.cs" />
-    <Compile Include="Filters\ParameterInfo.cs" />
+    <Compile Include="Parameters\IParametersExtensions.cs" />
+    <Compile Include="Parameters\ParameterInfo.cs" />
     <Compile Include="Filters\ParametrizedFilter.cs" />
     <Compile Include="Filters\PixelFilter.cs" />
     <Compile Include="Filters\TransformFilter.cs" />

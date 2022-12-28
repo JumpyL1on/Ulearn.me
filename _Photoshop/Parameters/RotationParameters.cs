@@ -2,26 +2,7 @@
 {
     public class RotationParameters : IParameters
     {
+        [ParameterInfo("Угол", 0, 0, 360, 15)]
         public double Angle { get; private set; }
-
-        public ParameterInfo[] GetDescription()
-        {
-            return new[]
-            {
-                new ParameterInfo
-                {
-                    Name = "Угол",
-                    MaxValue = 360,
-                    MinValue = 0,
-                    Increment = 15,
-                    DefaultValue = 0
-                }
-            };
-        }
-
-        public void SetValues(double[] values)
-        {
-            Angle = values[0];
-        }
     }
 }

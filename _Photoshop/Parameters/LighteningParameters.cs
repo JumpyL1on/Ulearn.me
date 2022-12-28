@@ -2,26 +2,7 @@
 {
     public class LighteningParameters : IParameters
     {
+        [ParameterInfo("Коэффициент", 1, 0, 10, 0.3)]
         public double Coefficient { get; private set; }
-
-        public ParameterInfo[] GetDescription()
-        {
-            return new[]
-            {
-                new ParameterInfo
-                {
-                    Name = "Коэффициент",
-                    MaxValue = 10,
-                    MinValue = 0,
-                    Increment = 0.3,
-                    DefaultValue = 1
-                }
-            };
-        }
-
-        public void SetValues(double[] values)
-        {
-            Coefficient = values[0];
-        }
     }
 }
