@@ -14,8 +14,9 @@ namespace MyPhotoshop
 
 			window.AddFilter(new PixelFilter<LighteningParameters>(
 				"Осветление/затемнение",
-				(original, parameters) => original * parameters.Coefficient
-				));
+				(original, parameters) => original * parameters.Coefficient,
+				new SimpleParametersHandler<LighteningParameters>()
+                ));
 
 			window.AddFilter(new PixelFilter<EmptyParameters>(
 				"Оттенки серого",
@@ -24,8 +25,9 @@ namespace MyPhotoshop
 					var average = (original.R + original.G + original.B) / 3;
 
 					return new Pixel(average, average, average);
-				}
-				));
+				},
+                new SimpleParametersHandler<EmptyParameters>()
+                ));
 
 			window.AddFilter(new TransformFilter(
 				"Отразить по горизонтали",
@@ -41,7 +43,8 @@ namespace MyPhotoshop
 
 			window.AddFilter(new TransformFilter<RotationParameters>(
 				"Свободное вращение",
-				new RotateTransformer()
+				new RotateTransformer(),
+				new SimpleParametersHandler<RotationParameters>()
 				));
 
 			Application.Run(window);

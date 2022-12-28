@@ -10,7 +10,8 @@ namespace MyPhotoshop
 
         public TransformFilter(
             string filterName,
-            ITransformer<TParameters> transformer)
+            ITransformer<TParameters> transformer,
+            IParametersHandler<TParameters> handler) : base(handler)
         {
             this.filterName = filterName;
             this.transformer = transformer;

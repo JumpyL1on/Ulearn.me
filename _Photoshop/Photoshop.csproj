@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Data\Pixel.cs" />
     <Compile Include="Parameters\IParametersExtensions.cs" />
+    <Compile Include="Handlers\IParametersHandler.cs" />
     <Compile Include="Parameters\ParameterInfo.cs" />
     <Compile Include="Filters\ParametrizedFilter.cs" />
     <Compile Include="Filters\PixelFilter.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Parameters\IParameters.cs" />
     <Compile Include="Parameters\LighteningParameters.cs" />
     <Compile Include="Parameters\RotationParameters.cs" />
+    <Compile Include="Handlers\SimpleParametersHandler.cs" />
     <Compile Include="Transformers\FreeTransformer.cs" />
     <Compile Include="Transformers\ITransformer.cs" />
     <Compile Include="Transformers\RotateTransformer.cs" />

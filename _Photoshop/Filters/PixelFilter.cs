@@ -8,7 +8,10 @@ namespace MyPhotoshop
         private readonly string filterName;
         private readonly Func<Pixel, TParameters, Pixel> func;
 
-        public PixelFilter(string filterName, Func<Pixel, TParameters, Pixel> func)
+        public PixelFilter(
+            string filterName,
+            Func<Pixel, TParameters, Pixel> func,
+            IParametersHandler<TParameters> handler) : base(handler)
         {
             this.filterName = filterName;
             this.func = func;
