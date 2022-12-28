@@ -6,26 +6,28 @@ namespace MyPhotoshop
     public class SimpleParametersHandler<TParameters> : IParametersHandler<TParameters>
         where TParameters : IParameters, new()
     {
+        private readonly PropertyInfo[] _properties;
+        private readonly ParameterInfo[] _parameters;
+
+        public SimpleParametersHandler()
+        {
+            _properties = typeof(TParameters)
+                .GetProperties()
+                .Where(property => property.GetCustomAttribute<ParameterInfo>() != null)
+                .ToArray();
+
+            _parameters = _properties
+                .Select(property => property.GetCustomAttribute<ParameterInfo>())
+                .ToArray();
+        }
+
         public TParameters CreateParameters(double[] values)
         {
             var parameters = new TParameters();
 
-            var type = parameters.GetType();
-
-            var i = 0;
-
-            foreach (var property in type
-                .GetProperties()
-                .Where(property => property.GetCustomAttribute<ParameterInfo>() != null))
+            for (var i = 0; i < values.Length; i++)
             {
-                if (values.Length == i)
-                {
-                    break;
-                }
-
-                property.SetValue(parameters, values[i]);
-
-                i++;
+                _properties[i].SetValue(parameters, values[i]);
             }
 
             return parameters;
@@ -33,11 +35,7 @@ namespace MyPhotoshop
 
         public ParameterInfo[] GetDescription()
         {
-            return typeof(TParameters)
-                .GetProperties()
-                .Select(property => property.GetCustomAttribute<ParameterInfo>())
-                .Where(attribute => attribute != null)
-                .ToArray();
+            return _parameters;
         }
     }
 }
