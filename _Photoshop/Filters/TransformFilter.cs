@@ -1,46 +1,20 @@
 ﻿using System.Drawing;
+using System;
+using MyPhotoshop.Transformers;
 
 namespace MyPhotoshop
 {
-    public class TransformFilter<TParameters> : ParametrizedFilter<TParameters>
-        where TParameters : IParameters, new()
+    public class TransformFilter : TransformFilter<EmptyParameters>
     {
-        private readonly string filterName;
-        private readonly ITransformer<TParameters> transformer;
+        public TransformFilter(string filterName, ITransformer<EmptyParameters> transformer) : base(filterName, transformer)
+        {
+        }
 
         public TransformFilter(
             string filterName,
-            ITransformer<TParameters> transformer)
+            Func<Size, Size> sizeTransform,
+            Func<Point, Size, Point> pointTransform) : this(filterName, new FreeTransformer(sizeTransform, pointTransform))
         {
-            this.filterName = filterName;
-            this.transformer = transformer;
-        }
-
-        public override Photo Process(Photo original, TParameters parameters)
-        {
-            transformer.Prepare(new Size(original.Width, original.Height), parameters);
-
-            var result = new Photo(transformer.ResultSize.Width, transformer.ResultSize.Height);
-
-            for (var x = 0; x < result.Width; x++)
-            {
-                for (var y = 0; y < result.Height; y++)
-                {
-                    var point = transformer.MapPoint(new Point(x, y));
-
-                    if (point != null)
-                    {
-                        result[x, y] = original[point.Value.X, point.Value.Y];
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        public override string ToString()
-        {
-            return filterName;
         }
     }
 }
